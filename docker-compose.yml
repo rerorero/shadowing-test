@@ -1,17 +1,31 @@
-version: '3'
+version: '2'
 
 services:
+
+  appv1:
+    build:
+      context: ./app/v1
+      dockerfile: Dockerfile
+    expose:
+      - "80"
+
   front-envoy:
     build:
       context: .
       dockerfile: Dockerfile-envoy
     volumes:
       - ./envoy.yaml:/etc/envoy.yaml
-    networks:
-      - envoymesh
     expose:
       - "80"
       - "8001"
-    ports:
-      - "8080:80"
-      - "8001:8001"
+    links:
+      - appv1
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile-client
+    links:
+      - front-envoy
+      - appv1
+

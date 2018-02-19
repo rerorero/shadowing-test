@@ -27,16 +27,15 @@ static_resources:
   clusters:
   - name: local_service
     connect_timeout: 0.25s
-    type: static
+    type: strict_dns
     lb_policy: round_robin
-    http2_protocol_options: {}
     hosts:
     - socket_address:
-        address: local_service
+        address: appv1
         port_value: 80
 
 admin:
-  access_log_path: "/var/log/envoy/admin-access.log"
+  access_log_path: "/dev/null"
   address:
     socket_address:
       address: 0.0.0.0
